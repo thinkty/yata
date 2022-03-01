@@ -1,15 +1,17 @@
 {
-  "name": "react-template",
+  "name": "yata",
   "version": "0.0.1",
   "author": "Tae Yoon Kim",
   "license": "MIT",
-  "description": "My version of CRA with TypeScript",
-  "homepage": "https://github.com/thinkty/react-template",
+  "description": "Yet Another Todo App",
+  "homepage": "https://github.com/thinkty/yata",
+  "type": "commonjs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/thinkty/react-template.git"
+    "url": "https://github.com/thinkty/yata.git"
   },
   "scripts": {
+    "start": "node --trace-warnings server/index.js",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
     "watch": "webpack --watch --config webpack.dev.ts",
@@ -19,8 +21,9 @@
     "build:dev": "webpack --config webpack.dev.ts"
   },
   "dependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1"
+    "express": "^4.17.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
