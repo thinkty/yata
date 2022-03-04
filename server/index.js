@@ -23,7 +23,20 @@ app.get('/data', (req, res) => {
   res.send(database.read());
 });
 
-// TODO: add, update, remove
+app.post('/data', (req, res) => {
+  console.log(req.params);
+  res.sendStatus(400); // TODO: 
+});
+
+app.patch('/data', (req, res) => {
+  console.log(req.params);
+  res.sendStatus(400); // TODO:
+});
+
+app.delete('/data', (req, res) => {
+  console.log(req.params);
+  res.sendStatus(400); // TODO:
+});
 
 // Check if /dist and /dist/index.html exists
 try {

@@ -41,6 +41,8 @@ class Database {
     const labels = this.db.labels;
     const validItems = this.db.items.filter(item => item.valid);
 
+    console.log(`Read ${validItems.length} valid items...`);
+
     return { labels, items: validItems };
   }
 
@@ -62,14 +64,14 @@ class Database {
     throw 'Label value incorrect...';
   }
 
-  addItem({ label, type, content }) {
+  addItem({ label, type, content, status }) {
     const id = this.db.items.length;
-    const newItem = { id, label, type, content, valid: true };
+    const newItem = { id, label, type, content, status, valid: true };
     this.db.items.push(newItem);
     this.save();
   }
 
-  updateItem({ id, label, type, content }) {
+  updateItem({ id, label, type, content, status }) {
     if (id >= this.db.items.length) {
       throw `Could not update item since given id: ${id} is out of bounds...`;
     }
@@ -78,7 +80,7 @@ class Database {
     this.db.items[id].valid = false;
 
     const newId = this.db.items.length;
-    const newItem = { id: newId, label, type, content, valid: true };
+    const newItem = { id: newId, label, type, content, status, valid: true };
     this.db.items.push(newItem);
     this.save();
   }
