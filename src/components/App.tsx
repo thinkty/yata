@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from './Button';
 import { TodoContainer } from './TodoContainer';
+import { Container, ContainerFetchResult } from './types';
 
 const CreateNewItemSVG: JSX.Element = (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" height={30} width={30}>
@@ -12,6 +13,48 @@ type DividerProps = { height: number };
 const Divider = (props: DividerProps): JSX.Element => (<div style={{ height: props.height, flexShrink: 0 }} />);
 
 export const App = (): JSX.Element => {
+
+  const [labels, setLabels] = useState<string[]>([]);
+  const [containers, setContainers] = useState<Container[]>([]);
+  console.log(containers, labels); // TODO: delete
+
+  // Fetch todo items data from server
+  useEffect(() => {
+    fetch('/data')
+    .then(res => res.json())
+    .then((data: ContainerFetchResult) => {
+      console.log('Fetched raw data...');
+      console.log(data);
+      console.log('Setting labels...');
+      setLabels(data.labels);
+      console.log(data.labels);
+      console.log('Processing data...');
+      const tempContainers: Container[] = [];
+
+      // Divide the fetched items by labels
+      for (let i = 0; i < data.items.length; i++) {
+        const item = data.items[i];
+        const targetIndex = tempContainers.findIndex(container => container.label == item.label);
+
+        // Insert new container to list
+        if (targetIndex !== -1) {
+          tempContainers[targetIndex].items.push(item);
+        }
+        // Update existing container
+        else {
+          tempContainers.push({ label: item.label, items: [item] });
+        }
+      }
+
+      console.log('Setting containers...');
+      setContainers(tempContainers);
+    })
+    .catch(e => {
+      console.error(e);
+      // TODO: handle error
+    });
+  }, []);
+
   return (
     <div
       style={{
@@ -34,25 +77,18 @@ export const App = (): JSX.Element => {
         color="#ffffff"
         hoverColor="#fafafa"
         onClick={() => {
-          console.log('Click!'); // TODO:
+          console.log('Click!'); // TODO: 
         }}
       />
       <Divider height={100} />
-      <TodoContainer
-        label="Work"
-      />
-      <Divider height={50} />
-      <TodoContainer
-        label="Personal"
-      />
-      <Divider height={50} />
-      <TodoContainer
-        label="Personal"
-      />
-      <Divider height={50} />
-      <TodoContainer
-        label="Personal"
-      />
+      {
+        containers.map((container) => (
+          <div key={container.label}>
+            <TodoContainer container={container} />
+            <Divider height={50} />
+          </div>
+        ))
+      }
     </div>
   );
 }

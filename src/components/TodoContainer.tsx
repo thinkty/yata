@@ -1,9 +1,9 @@
 import React from 'react';
 import { TodoItem } from './TodoItem';
-import { ItemStatus, ItemType } from './types';
+import { Container, toItemType, toItemStatus } from './types';
 
 type Props = {
-  label: string;
+  container: Container;
 } & typeof defaultProps;
 
 const defaultProps = {};
@@ -22,16 +22,23 @@ export const TodoContainer = (props: Props): JSX.Element => {
         style={{
           display: 'flex',
           flexDirection: 'row',
-          gap: 5
+          gap: 5,
         }}
       >
         <div style={{height: '80%', width: 3, backgroundColor: 'black' }} />
         <div style={{ fontWeight: 'bold', }}>
-          { props.label }
+          { props.container.label }
         </div>
       </div>
-      <TodoItem type={ItemType.Project} status={ItemStatus.Ongoing} />
-      <TodoItem type={ItemType.Basic} />
+      {
+        props.container.items.map((item) => (
+          <TodoItem
+            key={item.id}
+            type={toItemType(item.type)}
+            status={toItemStatus(item.status)}
+          />
+        ))
+      }
     </div>
   );
 }

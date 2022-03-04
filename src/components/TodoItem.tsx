@@ -11,8 +11,6 @@ type Props = {
 
 const defaultProps = {
   itemHeight: 100,
-  type: ItemType.Basic,
-  status: ItemStatus.New,
 };
 
 export const TodoItem = (props: Props): JSX.Element => {
